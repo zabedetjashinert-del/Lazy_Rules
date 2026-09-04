@@ -7,7 +7,7 @@
 ## 使用前的关键设置
 
 1. 在 Shadowrocket 中导入 `shadowrocket_smart_split.conf`。
-2. 确认节点订阅已经添加，并且“国外代理”下至少有一个可用节点组。
+2. 确认你的美国服务器已添加，并在 Shadowrocket 的节点列表中通过“连通性测试”。本配置不要求地区节点组；“国外代理”直接使用 `PROXY`，因此单节点也适用。
 3. Shadowrocket 首页 → 全局路由 → 选择“配置”。不要选择“代理”；选择“代理”会绕过本文件的分流规则。
 4. 开启 Shadowrocket 后，先打开一个国内 App 和一个国外服务，观察请求记录中的策略结果。
 
@@ -48,7 +48,7 @@
 
 1. 打开 ChatGPT，观察 `openai.com`、`chatgpt.com`、`oaiusercontent.com` 等请求，策略应显示 `国外代理`。
 2. 打开 YouTube 并播放视频，观察 `youtube.com`、`googlevideo.com`、`ytimg.com`、`ggpht.com` 等请求，策略应显示 `国外代理`。
-3. 如果策略正确但页面仍打不开，先检查“国外代理”组中的节点是否可用，再检查节点地区和延迟；不要先把规则改成 `DIRECT`。
+3. 如果策略正确但页面仍打不开，先检查这条美国服务器是否可用；不要先把规则改成 `DIRECT`。
 
 请求记录里的策略结果比只看 iPhone 顶部的 VPN 图标更可靠。VPN 图标只表示 Shadowrocket 的系统网络接口已开启，不代表所有连接都经过代理节点。
 
