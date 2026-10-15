@@ -4,11 +4,19 @@
 
 配置不包含节点、账号或订阅地址。导入后仍需使用自己的节点订阅。
 
+> [!WARNING]
+> **使用范围与风险说明**
+>
+> - `FINAL,国外代理` 表示未被前面规则匹配到的流量，可能会经由你当前选择的个人代理节点处理；新出现或未收录的国内服务也可能落入这一项。
+> - 本配置中的银行、支付和其他国内服务规则只是“优先直连”规则，不能保证所有金融、支付、政务、医疗、身份验证、隐私或新出现的国内服务绝对直连。
+> - 这是一份个人分流配置示例，不提供安全性、可用性、合规性或特定业务适用性的保证。
+> - 进行敏感操作前，请自行查看 Shadowrocket 的请求记录；如需明确使用直连网络，请关闭该配置或改用可信直连网络。分享请求记录前请先移除域名、账号及其他可识别信息。
+
 ## 使用前的关键设置
 
 1. 在 Shadowrocket 中导入 `shadowrocket_smart_split.conf`。
-2. 确认你的美国服务器已添加，并在 Shadowrocket 的节点列表中通过“连通性测试”。本配置不要求地区节点组；“国外代理”直接使用 `PROXY`，因此单节点也适用。
-3. Shadowrocket 首页 → 全局路由 → 选择“配置”。不要选择“代理”；选择“代理”会绕过本文件的分流规则。
+2. 确认你自己的可用代理节点已添加，并在 Shadowrocket 的节点列表中通过“连通性测试”。本配置不要求地区节点组；“国外代理”直接使用 `PROXY`，因此单节点也适用。
+3. Shadowrocket 首页 → 全局路由 → 选择“配置”。不要选择“代理”；选择“代理”时不会按本文件的规则分流。
 4. 开启 Shadowrocket 后，先打开一个国内 App 和一个国外服务，观察请求记录中的策略结果。
 
 ## 分流顺序
@@ -21,7 +29,7 @@
 | 3 | `China.list` | `DIRECT` | 国内域名综合兜底 |
 | 4 | `Global.list` | `国外代理` | 已知全球服务补充兜底 |
 | 5 | `GEOIP,CN` | `DIRECT` | 中国 IP 兜底 |
-| 6 | `FINAL` | `国外代理` | 新出现的国外服务不会因漏收录而默认直连 |
+| 6 | `FINAL` | `国外代理` | 未匹配流量可能使用个人代理节点；不适合对线路有绝对要求的操作 |
 
 规则是按请求的域名/IP/用户代理匹配的，不是把整个 App 永久锁定为一种线路。因此，在微信里打开一个国外网页时，该网页仍可能走代理；这属于预期行为。
 
@@ -29,8 +37,8 @@
 
 - `doh.pub`、阿里 DoH 和阿里/腾讯公共 DNS 用于中国大陆环境下的常规解析，优先保证国内 CDN 和国内直连服务的可用性。
 - `direct-dns-server` 明确指定直连域名使用上述解析器，避免导入后因默认值变化而产生差异。
-- `dns-direct-fallback-proxy = true` 允许直连域名解析失败时经代理重试，减少国外域名被国内 DNS 污染或拦截后打不开的问题。
-- `hijack-dns` 接管常见硬编码的 `8.8.8.8/8.8.4.4` DNS 请求，避免 App 绕过 Shadowrocket 的 DNS 处理。
+- `dns-direct-fallback-proxy = true` 允许直连域名解析失败时经代理重试，减少部分域名在特定网络环境下无法解析的情况。
+- `hijack-dns` 将常见硬编码的 `8.8.8.8/8.8.4.4` DNS 请求交由 Shadowrocket 的 DNS 处理链路统一处理。
 - 保留 IPv6，但不优先使用 IPv6；代理流量仅屏蔽 QUIC，国内直连不强制禁用 UDP/443。
 
 这套设置的取舍是“国内解析优先、国外失败可回退”，而不是把所有 DNS 查询都强制交给某一个海外 DNS。若你的网络本身有稳定的 IPv6 或自建 DNS，可以再单独调整，不建议一开始同时改动多项。
@@ -48,13 +56,15 @@
 
 1. 打开 ChatGPT，观察 `openai.com`、`chatgpt.com`、`oaiusercontent.com` 等请求，策略应显示 `国外代理`。
 2. 打开 YouTube 并播放视频，观察 `youtube.com`、`googlevideo.com`、`ytimg.com`、`ggpht.com` 等请求，策略应显示 `国外代理`。
-3. 如果策略正确但页面仍打不开，先检查这条美国服务器是否可用；不要先把规则改成 `DIRECT`。
+3. 如果策略正确但页面仍打不开，先检查当前选择的代理节点是否可用；不要先把规则改成 `DIRECT`。
 
 请求记录里的策略结果比只看 iPhone 顶部的 VPN 图标更可靠。VPN 图标只表示 Shadowrocket 的系统网络接口已开启，不代表所有连接都经过代理节点。
 
 ## 规则源与维护
 
-本配置只引用 `blackmatrix7/ios_rule_script` 的 `Shadowrocket` 目录规则，避免把 `QuantumultX` 专用文本直接当成 Shadowrocket 规则使用。
+本配置只引用 `blackmatrix7/ios_rule_script` 的 `Shadowrocket` 目录规则，避免把 `QuantumultX` 专用文本直接当成 Shadowrocket 规则使用。具体引用版本以 `shadowrocket_smart_split.conf` 中的规则地址为准。
+
+本仓库内由仓库作者提供的配置和说明以 [GPL-2.0-only](LICENSE) 发布。远程引用的 `blackmatrix7/ios_rule_script` 规则列表仍由其上游作者和许可证管理；请同时阅读 [NOTICE.md](NOTICE.md) 中的署名与边界说明。
 
 - 规则仓库：[blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script)
 - 国内综合规则：[Shadowrocket/China.list](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/China/China.list)
