@@ -12,12 +12,36 @@
 > - 这是一份个人分流配置示例，不提供安全性、可用性、合规性或特定业务适用性的保证。
 > - 进行敏感操作前，请自行查看 Shadowrocket 的请求记录；如需明确使用直连网络，请关闭该配置或改用可信直连网络。分享请求记录前请先移除域名、账号及其他可识别信息。
 
+## 导入配置
+
+Shadowrocket 支持从 URL 或 iCloud Drive 导入配置文件，两种方式任选其一：
+
+- **链接导入（推荐）**：复制 [`shadowrocket_smart_split.conf` 的 Raw 地址](https://raw.githubusercontent.com/zabedetjashinert-del/Lazy_Rules/main/shadowrocket_smart_split.conf)，然后在 Shadowrocket 的“配置”页面点击右上角 `+`，粘贴地址并下载。普通的 `github.com/.../blob/...` 网页地址不能直接作为配置导入。
+- **本地文件导入**：先将 `.conf` 文件下载到 iPhone 的“文件”或 iCloud Drive，再通过分享菜单用 Shadowrocket 打开，或在 Shadowrocket 的“配置”页面选择本地文件导入。
+
+通过链接导入不需要事先手动保存文件，但 Shadowrocket 仍会在设备上下载一份配置。仓库后续更新不代表手机中的配置必然自动同步；如未启用自动更新，需要在 Shadowrocket 中重新更新或下载。
+
+
+
 ## 使用前的关键设置
 
 1. 在 Shadowrocket 中导入 `shadowrocket_smart_split.conf`。
 2. 确认你自己的可用代理节点已添加，并在 Shadowrocket 的节点列表中通过“连通性测试”。本配置不要求地区节点组；“国外代理”直接使用 `PROXY`，因此单节点也适用。
 3. Shadowrocket 首页 → 全局路由 → 选择“配置”。不要选择“代理”；选择“代理”时不会按本文件的规则分流。
 4. 开启 Shadowrocket 后，先打开一个国内 App 和一个国外服务，观察请求记录中的策略结果。
+
+## 蜂窝数据与 SIM 卡
+
+本配置同样适用于插有中国大陆 SIM 卡的 iPhone，蜂窝数据和 Wi-Fi 下使用相同的分流规则：
+
+- 命中 `DIRECT` 的请求直接使用当前网络访问；在蜂窝数据下，出口通常是当前移动运营商网络。
+- 命中 `国外代理` 的请求仍会先使用当前网络流量连接代理节点，再由节点访问目标服务。
+- 因此，`DIRECT` 和代理请求都会消耗手机流量，区别是是否经过代理节点。iPhone 顶部显示 VPN 图标，也不代表所有请求都走代理。
+- 双卡 iPhone 使用哪张卡提供蜂窝数据由 iOS 的“蜂窝数据”设置决定，本配置不负责选择 SIM 卡。
+
+开启后，请在 Shadowrocket 的请求记录中确认国内服务显示 `DIRECT`、国外服务显示 `国外代理`。
+
+
 
 ## 分流顺序
 
