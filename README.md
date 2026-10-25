@@ -21,8 +21,6 @@ Shadowrocket 支持从 URL 或 iCloud Drive 导入配置文件，两种方式任
 
 通过链接导入不需要事先手动保存文件，但 Shadowrocket 仍会在设备上下载一份配置。仓库后续更新不代表手机中的配置必然自动同步；如未启用自动更新，需要在 Shadowrocket 中重新更新或下载。
 
-
-
 ## 使用前的关键设置
 
 1. 在 Shadowrocket 中导入 `shadowrocket_smart_split.conf`。
@@ -40,8 +38,6 @@ Shadowrocket 支持从 URL 或 iCloud Drive 导入配置文件，两种方式任
 - 双卡 iPhone 使用哪张卡提供蜂窝数据由 iOS 的“蜂窝数据”设置决定，本配置不负责选择 SIM 卡。
 
 开启后，请在 Shadowrocket 的请求记录中确认国内服务显示 `DIRECT`、国外服务显示 `国外代理`。
-
-
 
 ## 分流顺序
 
